@@ -6,6 +6,7 @@ import (
 
 	"./lexer"
 	"./parser"
+	"./print"
 )
 
 func main() {
@@ -24,6 +25,6 @@ func todo(src string) {
 	go lexer.Run(tokenChan, &src)
 
 	root := <-nodeChan
-	fmt.Printf("%s\n", root)
+	fmt.Printf("%s\n", print.Stringify(root))
 	return
 }
