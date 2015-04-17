@@ -20,7 +20,7 @@ func todo(src string) {
 	tokenChan := make(chan lexer.Token)
 	go lexer.Run(tokenChan, &src)
 	for t := range tokenChan {
-		fmt.Printf("Got token %s and its type is %d\n", t.Text, t.Type)
+		fmt.Printf("Got %s\n", t)
 	}
 	return
 }
