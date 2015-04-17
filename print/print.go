@@ -16,13 +16,16 @@ func todo(t parser.Todo) string {
 	for _, td := range t {
 		strs = append(strs, taskDecl(td))
 	}
-	return strings.Join(strs, "\n")
+	return strings.Join(strs, "\n\n")
 }
 
 func taskDecl(td parser.TaskDecl) string {
 	mt := mainTask(td.MainTask)
-	st := subtasks(td.Subtasks)
-	return fmt.Sprintf("%s\n%s", mt, st)
+	if len(td.Subtasks) > 0 {
+		st := subtasks(td.Subtasks)
+		return fmt.Sprintf("%s\n%s", mt, st)
+	}
+	return fmt.Sprintf("%s", mt)
 }
 
 func mainTask(mt parser.Task) string {
