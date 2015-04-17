@@ -6,7 +6,7 @@ type Todo []TaskDecl
 
 type TaskDecl struct {
 	MainTask Task
-	SubTasks []Subtask
+	Subtasks []Subtask
 }
 
 type Task struct {
