@@ -2,23 +2,23 @@ package parser
 
 import "../lexer"
 
-type Todo []taskDecl
+type Todo []TaskDecl
 
-type taskDecl struct {
-	mainTask task
-	subTasks []subtask
+type TaskDecl struct {
+	MainTask Task
+	SubTasks []Subtask
 }
 
-type task struct {
-	taskName string
-	taskDeps dependencies
+type Task struct {
+	TaskName string
+	TaskDeps Dependencies
 }
 
-type subtask struct {
-	taskName string
+type Subtask struct {
+	TaskName string
 }
 
-type dependencies []string
+type Dependencies []string
 
 func consume() {
 	lookAhead = <-tokenChan
@@ -43,7 +43,7 @@ func parse() Todo {
 }
 
 func parseTodo() Todo {
-	var taskDecls []taskDecl
+	var taskDecls []TaskDecl
 	taskDecls = append(taskDecls, parseTaskDecl())
 	for lookAhead.Type == lexer.NAME {
 		taskDecls = append(taskDecls, parseTaskDecl())
@@ -51,35 +51,35 @@ func parseTodo() Todo {
 	return taskDecls
 }
 
-func parseTaskDecl() taskDecl {
+func parseTaskDecl() TaskDecl {
 	mainTask := parseMainTask()
-	var subs []subtask
+	var subs []Subtask
 	if lookAhead.Type == lexer.HYPHEN {
 		subs = parseSubtasks()
 	}
-	return taskDecl{mainTask, subs}
+	return TaskDecl{mainTask, subs}
 }
 
-func parseMainTask() task {
+func parseMainTask() Task {
 	taskName := consumeTaskName()
-	var deps dependencies
+	var deps Dependencies
 	if lookAhead.Type == lexer.COLON {
 		consume()
 		deps = parseDependencies()
 	}
-	return task{taskName, deps}
+	return Task{taskName, deps}
 }
 
-func parseSubtasks() []subtask {
-	var subs []subtask
+func parseSubtasks() []Subtask {
+	var subs []Subtask
 	for lookAhead.Type == lexer.HYPHEN {
 		consume()
-		subs = append(subs, subtask{consumeTaskName()})
+		subs = append(subs, Subtask{consumeTaskName()})
 	}
 	return subs
 }
 
-func parseDependencies() dependencies {
+func parseDependencies() Dependencies {
 	var taskNames []string
 	taskNames = append(taskNames, consumeTaskName())
 	for lookAhead.Type == lexer.COMMA {
