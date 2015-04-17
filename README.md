@@ -8,5 +8,5 @@ TaskDecl = MainTask [ Subtask ]
 MainTask = TaskName [ ":" Dependencies ]
 SubTask = "-" TaskName { "-" TaskName }
 Dependencies = TaskName { "," TaskName }
-TaskName = <any character except "-" or ":" or newline>
+TaskName = <any character except "-" or ":" or "," or newline>
 ```
