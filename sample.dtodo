@@ -1,0 +1,21 @@
+// comment
+
+// common task declaration
+task that has to be done before big task
+
+// task declaration with a single subtask
+task with subtask
+- subtask
+
+task with multiple subtasks
+- more tasks
+- task name is a identifier
+
+// task with dependencies
+being happy: eating chocolate, get a good job
+
+big task: task that has to be done before big task, other task
+- nested task
+
+nested task
+- nested nested task

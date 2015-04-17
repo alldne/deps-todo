@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	dat, err := ioutil.ReadFile("sample.wtodo")
+	dat, err := ioutil.ReadFile("sample.dtodo")
 	if err != nil {
 		panic(err)
 	}
