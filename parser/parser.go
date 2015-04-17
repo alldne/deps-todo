@@ -113,5 +113,6 @@ var lookAhead lexer.Token
 
 func Run(nodeChan chan Todo, lexerTokenChan chan lexer.Token) {
 	tokenChan = lexerTokenChan
+	consume()
 	nodeChan <- parse()
 }
