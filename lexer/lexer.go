@@ -1,8 +1,8 @@
-package main
+package lexer
 
-type token struct {
-	tktype tokenType
-	text   string
+type Token struct {
+	Type tokenType
+	Text string
 }
 
 type tokenType int
@@ -14,7 +14,7 @@ const (
 	COLON
 )
 
-func lexer(tokenChan chan token, src string) {
+func Run(tokenChan chan token, src string) {
 	tokenChan <- token{EQUAL, "="}
 	close(tokenChan)
 }

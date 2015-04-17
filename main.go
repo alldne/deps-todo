@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+
+	"./lexer"
 )
 
 func main() {
@@ -15,10 +17,10 @@ func main() {
 }
 
 func todo(src string) {
-	tokenChan := make(chan token)
-	go lexer(tokenChan, src)
+	tokenChan := make(chan lexer.Token)
+	go lexer.Run(tokenChan, &src)
 	for t := range tokenChan {
-		fmt.Printf("Got token %s and its type is %d\n", t.text, t.tktype)
+		fmt.Printf("Got token %s and its type is %d\n", t.Text, t.Type)
 	}
 	return
 }
