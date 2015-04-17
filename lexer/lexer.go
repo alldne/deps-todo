@@ -83,5 +83,7 @@ func Run(tokenChan chan Token, srcString *string) {
 			continue
 		}
 	}
+
+	tokenChan <- Token{EOF, ""}
 	close(tokenChan)
 }

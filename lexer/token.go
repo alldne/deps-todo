@@ -9,6 +9,7 @@ const (
 	HYPHEN
 	COLON
 	COMMA
+	EOF
 )
 
 type Token struct {
@@ -27,6 +28,8 @@ func (t Token) String() string {
 		typeStr = "COLON"
 	case COMMA:
 		typeStr = "COMMA"
+	case EOF:
+		typeStr = "EOF"
 	}
 	return fmt.Sprintf("Token(%s, %s)", typeStr, t.Text)
 }
