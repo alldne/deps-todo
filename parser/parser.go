@@ -1,6 +1,19 @@
 package parser
 
-import "../lexer"
+import (
+	"os"
+	"../lexer"
+
+	"github.com/Sirupsen/logrus"
+)
+
+var log = logrus.New()
+
+func init() {
+	if os.Getenv("DEBUG") == "1" {
+		log.Level = logrus.DebugLevel
+	}
+}
 
 type Todo []TaskDecl
 
@@ -22,6 +35,7 @@ type Dependencies []string
 
 func consume() {
 	lookAhead = <-tokenChan
+	log.Debugf("Got token %s, %s", lookAhead.Type, lookAhead.Text)
 	return
 }
 
@@ -48,6 +62,7 @@ func parseTodo() Todo {
 	for lookAhead.Type == lexer.NAME {
 		taskDecls = append(taskDecls, parseTaskDecl())
 	}
+	log.Debugf("parsed todo: %s", taskDecls)
 	return taskDecls
 }
 
@@ -57,6 +72,7 @@ func parseTaskDecl() TaskDecl {
 	if lookAhead.Type == lexer.HYPHEN {
 		subs = parseSubtasks()
 	}
+	log.Debugf("parsed task decl: %s, %s", mainTask, subs)
 	return TaskDecl{mainTask, subs}
 }
 
@@ -67,6 +83,7 @@ func parseMainTask() Task {
 		consume()
 		deps = parseDependencies()
 	}
+	log.Debugf("parsed main task: %s, %s", taskName, deps)
 	return Task{taskName, deps}
 }
 
@@ -76,6 +93,7 @@ func parseSubtasks() []Subtask {
 		consume()
 		subs = append(subs, Subtask{consumeTaskName()})
 	}
+	log.Debugf("parsed subtasks: %s", subs)
 	return subs
 }
 
@@ -86,6 +104,7 @@ func parseDependencies() Dependencies {
 		consume()
 		taskNames = append(taskNames, consumeTaskName())
 	}
+	log.Debugf("parsed dependencies: %s", taskNames)
 	return taskNames
 }
 
