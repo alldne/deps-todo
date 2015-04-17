@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 
 	"./lexer"
+	"./parser"
 )
 
 func main() {
@@ -18,9 +19,11 @@ func main() {
 
 func todo(src string) {
 	tokenChan := make(chan lexer.Token)
+	nodeChan := make(chan parser.Todo)
+	go parser.Run(nodeChan, tokenChan)
 	go lexer.Run(tokenChan, &src)
-	for t := range tokenChan {
-		fmt.Printf("Got %s\n", t)
-	}
+
+	root := <-nodeChan
+	fmt.Printf("%s\n", root)
 	return
 }
