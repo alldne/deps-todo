@@ -21,9 +21,8 @@ func main() {
 func todo(src string) {
 	tokenChan := make(chan lexer.Token)
 	nodeChan := make(chan parser.Todo)
-	go parser.Run(nodeChan, tokenChan)
 	go lexer.Run(tokenChan, &src)
-
+	go parser.Run(nodeChan, tokenChan)
 	root := <-nodeChan
 	fmt.Printf("%s\n", print.Stringify(root))
 	return
