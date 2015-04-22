@@ -20,10 +20,10 @@ func main() {
 
 func todo(src string) {
 	tokenChan := make(chan lexer.Token)
-	nodeChan := make(chan parser.Todo)
+	treeChan := make(chan parser.Todo)
 	go lexer.Run(tokenChan, &src)
-	go parser.Run(nodeChan, tokenChan)
-	root := <-nodeChan
+	go parser.Run(treeChan, tokenChan)
+	root := <-treeChan
 	fmt.Printf("%s\n", print.Stringify(root))
 	return
 }
