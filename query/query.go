@@ -1,8 +1,9 @@
 package query
 
 import (
-	"../parser"
 	"fmt"
+
+	"../parser"
 )
 
 type querier struct {
