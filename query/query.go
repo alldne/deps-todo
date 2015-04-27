@@ -1,8 +1,6 @@
 package query
 
 import (
-	"fmt"
-
 	"../parser"
 )
 
@@ -58,6 +56,5 @@ func addTask(tmap map[string]task, node interface{}) {
 
 func New(root parser.Todo) querier {
 	t := makeTaskMap(root)
-	fmt.Println(t)
 	return querier{root, t}
 }
