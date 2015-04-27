@@ -9,6 +9,27 @@ type querier struct {
 	taskMap map[string]task
 }
 
+func (q querier) GetTodo(goal string) []string {
+	t, ok := q.taskMap[goal]
+	if !ok {
+		return []string{goal}
+	}
+
+	if len(t.deps) == 0 {
+		if len(t.subtasks) == 0 {
+			return []string{t.name}
+		} else {
+			return q.GetTodo(t.subtasks[0])
+		}
+	} else {
+		acc := make([]string, 0)
+		for _, taskName := range t.deps {
+			acc = append(acc, q.GetTodo(taskName)...)
+		}
+		return acc
+	}
+}
+
 type task struct {
 	name     string
 	deps     []string
