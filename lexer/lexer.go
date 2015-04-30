@@ -39,9 +39,22 @@ func comment() {
 
 func taskname() string {
 	var buffer bytes.Buffer
-	for lookAhead != "\n" && lookAhead != "/" && lookAhead != ":" && lookAhead != "," {
-		buffer.WriteString(lookAhead)
-		consume()
+	for lookAhead != "\n" && lookAhead != ":" && lookAhead != "," {
+		if lookAhead == "/" {
+			t := lookAhead
+			consume()
+			if lookAhead == "/" {
+				for lookAhead != "\n" {
+					consume()
+				}
+				break
+			} else {
+				buffer.WriteString(t)
+			}
+		} else {
+			buffer.WriteString(lookAhead)
+			consume()
+		}
 	}
 	return strings.Trim(buffer.String(), " ")
 }
