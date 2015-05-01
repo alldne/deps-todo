@@ -9,6 +9,7 @@ const (
 	HYPHEN
 	COLON
 	COMMA
+	ASTERISK
 	EOF
 )
 
@@ -28,6 +29,8 @@ func (t Token) String() string {
 		typeStr = "COLON"
 	case COMMA:
 		typeStr = "COMMA"
+	case ASTERISK:
+		typeStr = "ASTERISK"
 	case EOF:
 		typeStr = "EOF"
 	}
