@@ -24,14 +24,19 @@ type TaskDecl struct {
 
 type Task struct {
 	TaskName string
-	TaskDeps Dependencies
 }
+
+type subtaskType int
+
+const (
+	ORDERED subtaskType = iota
+	UNORDERED
+)
 
 type Subtask struct {
+	Type subtaskType
 	TaskName string
 }
-
-type Dependencies []string
 
 func consume() {
 	lookAhead = <-tokenChan
@@ -69,7 +74,7 @@ func parseTodo() Todo {
 func parseTaskDecl() TaskDecl {
 	mainTask := parseMainTask()
 	var subs []Subtask
-	if lookAhead.Type == lexer.HYPHEN {
+	if lookAhead.Type == lexer.HYPHEN || lookAhead.Type == lexer.ASTERISK {
 		subs = parseSubtasks()
 	}
 	log.Debugf("parsed task decl: %s, %s", mainTask, subs)
@@ -78,34 +83,24 @@ func parseTaskDecl() TaskDecl {
 
 func parseMainTask() Task {
 	taskName := consumeTaskName()
-	var deps Dependencies
-	if lookAhead.Type == lexer.COLON {
-		consume()
-		deps = parseDependencies()
-	}
-	log.Debugf("parsed main task: %s, %s", taskName, deps)
-	return Task{taskName, deps}
+	log.Debugf("parsed main task: %s", taskName)
+	return Task{taskName}
 }
 
 func parseSubtasks() []Subtask {
 	var subs []Subtask
-	for lookAhead.Type == lexer.HYPHEN {
+	for lookAhead.Type == lexer.HYPHEN || lookAhead.Type == lexer.ASTERISK {
+		var t subtaskType
+		if lookAhead.Type == lexer.HYPHEN {
+			t = ORDERED
+		} else if lookAhead.Type == lexer.ASTERISK {
+			t = UNORDERED
+		}
 		consume()
-		subs = append(subs, Subtask{consumeTaskName()})
+		subs = append(subs, Subtask{t, consumeTaskName()})
 	}
 	log.Debugf("parsed subtasks: %s", subs)
 	return subs
-}
-
-func parseDependencies() Dependencies {
-	var taskNames []string
-	taskNames = append(taskNames, consumeTaskName())
-	for lookAhead.Type == lexer.COMMA {
-		consume()
-		taskNames = append(taskNames, consumeTaskName())
-	}
-	log.Debugf("parsed dependencies: %s", taskNames)
-	return taskNames
 }
 
 var tokenChan chan lexer.Token

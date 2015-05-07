@@ -29,9 +29,6 @@ func taskDecl(td parser.TaskDecl) string {
 }
 
 func mainTask(mt parser.Task) string {
-	if len(mt.TaskDeps) > 0 {
-		return fmt.Sprintf("%s: %s", mt.TaskName, dependencies(mt.TaskDeps))
-	}
 	return mt.TaskName
 }
 
@@ -41,8 +38,4 @@ func subtasks(st []parser.Subtask) string {
 		strs = append(strs, fmt.Sprintf("- %s", sub.TaskName))
 	}
 	return strings.Join(strs, "\n")
-}
-
-func dependencies(d parser.Dependencies) string {
-	return strings.Join(d, ", ")
 }

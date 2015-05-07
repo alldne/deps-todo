@@ -7,8 +7,6 @@ type tokenType int
 const (
 	NAME tokenType = iota
 	HYPHEN
-	COLON
-	COMMA
 	ASTERISK
 	EOF
 )
@@ -25,10 +23,6 @@ func (t Token) String() string {
 		typeStr = "NAME"
 	case HYPHEN:
 		typeStr = "HYPHEN"
-	case COLON:
-		typeStr = "COLON"
-	case COMMA:
-		typeStr = "COMMA"
 	case ASTERISK:
 		typeStr = "ASTERISK"
 	case EOF:

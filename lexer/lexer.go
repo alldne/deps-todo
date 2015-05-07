@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 )
 
@@ -56,7 +57,10 @@ func taskname() string {
 			consume()
 		}
 	}
-	return strings.Trim(buffer.String(), " ")
+	ret := strings.Trim(buffer.String(), " ")
+	fmt.Println(ret)
+	return ret
+	//    return strings.Trim(buffer.String(), " ")
 }
 
 func isEnd() bool {
@@ -81,14 +85,6 @@ func Run(tokenChan chan Token, srcString *string) {
 		case "-":
 			consume()
 			tokenChan <- Token{HYPHEN, "-"}
-			continue
-		case ":":
-			consume()
-			tokenChan <- Token{COLON, ":"}
-			continue
-		case ",":
-			consume()
-			tokenChan <- Token{COMMA, ","}
 			continue
 		default:
 			name := taskname()

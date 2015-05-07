@@ -10,29 +10,29 @@ type querier struct {
 }
 
 func (q querier) GetTodo(goal string) []string {
-	t, ok := q.taskMap[goal]
+	_, ok := q.taskMap[goal]
 	if !ok {
 		return []string{goal}
 	}
 
-	if len(t.deps) == 0 {
-		if len(t.subtasks) == 0 {
-			return []string{t.name}
-		} else {
-			return q.GetTodo(t.subtasks[0])
-		}
-	} else {
-		acc := make([]string, 0)
-		for _, taskName := range t.deps {
-			acc = append(acc, q.GetTodo(taskName)...)
-		}
-		return acc
-	}
+	//    if len(t.deps) == 0 {
+	//      if len(t.subtasks) == 0 {
+	//        return []string{t.name}
+	//      } else {
+	//        return q.GetTodo(t.subtasks[0])
+	//      }
+	//    } else {
+	//      acc := make([]string, 0)
+	//      for _, taskName := range t.deps {
+	//        acc = append(acc, q.GetTodo(taskName)...)
+	//      }
+	//      return acc
+	//    }
+	return []string{}
 }
 
 type task struct {
 	name     string
-	deps     []string
 	subtasks []string
 }
 
@@ -65,12 +65,6 @@ func addTask(tmap map[string]task, node interface{}) {
 		tname := string(node.TaskName)
 		t := tmap[tname]
 		t.name = node.TaskName
-		if len(node.TaskDeps) > 0 {
-			t.deps = make([]string, len(node.TaskDeps))
-			for i, str := range node.TaskDeps {
-				t.deps[i] = string(str)
-			}
-		}
 		tmap[tname] = t
 	}
 }

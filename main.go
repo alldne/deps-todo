@@ -19,6 +19,7 @@ func main() {
 		panic(err)
 	}
 
+	fmt.Println("sdfdsf")
 	todo(string(dat))
 }
 
