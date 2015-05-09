@@ -4,6 +4,23 @@ import "fmt"
 
 type tokenType int
 
+func (t tokenType) String() string {
+	var typeStr string
+	switch t {
+	case NAME:
+		typeStr = "NAME"
+	case HYPHEN:
+		typeStr = "HYPHEN"
+	case COLON:
+		typeStr = "COLON"
+	case COMMA:
+		typeStr = "COMMA"
+	case EOF:
+		typeStr = "EOF"
+	}
+	return typeStr
+}
+
 const (
 	NAME tokenType = iota
 	HYPHEN
@@ -18,18 +35,6 @@ type Token struct {
 }
 
 func (t Token) String() string {
-	var typeStr string
-	switch t.Type {
-	case NAME:
-		typeStr = "NAME"
-	case HYPHEN:
-		typeStr = "HYPHEN"
-	case COLON:
-		typeStr = "COLON"
-	case COMMA:
-		typeStr = "COMMA"
-	case EOF:
-		typeStr = "EOF"
-	}
+	typeStr := t.Type.String()
 	return fmt.Sprintf("Token(%s, %s)", typeStr, t.Text)
 }
